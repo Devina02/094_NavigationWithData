@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
@@ -35,25 +36,26 @@ enum class PengelolaHalaman {
     Summary
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EsJumboAppBar(
     bisaNavigasiBack: Boolean,
     navigasiUp: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     TopAppBar(
-        title = { Text(stringResource(id = R.string.app_name))},
+        title = { Text(stringResource(R.string.app_name)) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor =
-            MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        modifier = modifier,
+        modifier = Modifier,
         navigationIcon = {
-            if (bisaNavigasiBack){
+            if (bisaNavigasiBack) {
                 IconButton(onClick = navigasiUp) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button)
+                        painterResource(R.drawable.minuman), contentDescription = stringResource(
+                            R.string.back_button
+                        )
                     )
                 }
             }
@@ -61,6 +63,7 @@ fun EsJumboAppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EsJumboApp(
     viewModel: OrderViewModel = viewModel(),
@@ -68,61 +71,54 @@ fun EsJumboApp(
 ) {
     Scaffold(
         topBar = {
-            EsJumboAppBar(
-                bisaNavigasiBack = false,
-                navigasiUp = { }
-            )
+            EsJumboAppBar(bisaNavigasiBack = false, navigasiUp = { /*TODO*/ })
         }
-    ) {
-            innerPadding ->
+    ) { innerPadding ->
         val uiState by viewModel.stateUI.collectAsState()
-        NavHost(navController = navController,
+        NavHost(
+            navController = navController,
             startDestination = PengelolaHalaman.Home.name,
             modifier = Modifier.padding(innerPadding)
-        )
-        {
-            composable(route = PengelolaHalaman.Home.name){
-                HalamanHome(
-                    onNextButtonClicked = {
-                        navController.navigate(PengelolaHalaman.Rasa.name)
-                    }
+        ) {
+            composable(route = PengelolaHalaman.Home.name) {
+                HalamanHome(onNextButtonClicked = {
+                    navController.navigate(PengelolaHalaman.Rasa.name)
+                }
                 )
             }
-            composable(route = PengelolaHalaman.Rasa.name){
+            composable(route = PengelolaHalaman.Rasa.name) {
                 val context = LocalContext.current
                 HalamanSatu(
-                    pilihanRasa = flavors.map{ id ->
-                        context.resources.getString(id)
-                    },
-                    onSelectionChanged = { viewModel.setRasa(it)},
-                    onConfirmButtonClicked = {
-                        viewModel.setJumlah(it)
-                    },
-                    onNextButtonClicked = {
-                        navController.navigate(PengelolaHalaman.Summary.name)
-                    },
+                    pilihanRasa = flavors.map { id -> context.resources.getString(id) },
+                    onSelectionChanged = { viewModel.setRasa(it) },
+                    onConfirmButtonClicked = { viewModel.setJumlah(it) },
+                    onNextButtonClicked = { navController.navigate(PengelolaHalaman.Summary.name) },
                     onCancelButtonClicked = {
                         cancelOrderAndNavigateToHome(
                             viewModel,
                             navController
                         )
-                    }
-                )
+                    })
             }
-            composable(route = PengelolaHalaman.Summary.name){
-                HalamanDua(orderUIState = uiState,
-                    onCancelButtonClicked = {cancelorderAndNavigateToRasa(navController)},
-                )
+            composable(route = PengelolaHalaman.Summary.name) {
+                HalamanDua(
+                    orderUiState = uiState,
+                    onCancelButtonClicked = { cancelOrderAndNavigateToRasa(navController) })
             }
         }
     }
 }
-fun cancelOrderAndNavigateToHome(viewModel: OrderViewModel,navController: NavHostController) {
+
+private fun cancelOrderAndNavigateToHome(
+    viewModel: OrderViewModel,
+    navController: NavHostController
+) {
     viewModel.orderReset()
     navController.popBackStack(PengelolaHalaman.Home.name, inclusive = false)
 }
-private fun cancelorderAndNavigateToRasa(
+
+private fun cancelOrderAndNavigateToRasa(
     navController: NavHostController
-){
+) {
     navController.popBackStack(PengelolaHalaman.Rasa.name, inclusive = false)
 }

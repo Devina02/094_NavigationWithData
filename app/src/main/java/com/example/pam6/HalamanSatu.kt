@@ -30,29 +30,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun HalamanSatu(
     pilihanRasa: List<String>,
     onSelectionChanged: (String) -> Unit,
     onConfirmButtonClicked: (Int) -> Unit,
-    onNextButtonClicked:() -> Unit,
-    onCancelButtonClicked:() -> Unit,
+    onNextButtonClicked: () -> Unit,
+    onCancelButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
-)
-{
-    var rasaYgDipilih by rememberSaveable { mutableStateOf("") }
-    var textJmlBeli by remember {mutableStateOf("")}
+) {
+    var rasaYgDipilih by rememberSaveable {
+        mutableStateOf("")
+    }
+    var textJmlBeli by remember {
+        mutableStateOf("")
+    }
 
     Column(
-        modifier = modifier,
+        modifier = Modifier,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column (
-            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)))
-        {
-            pilihanRasa.forEach{ item ->
-                Row (
+        Column(
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+        ) {
+            pilihanRasa.forEach { item ->
+                Row(
                     modifier = Modifier.selectable(
                         selected = rasaYgDipilih == item,
                         onClick = {
@@ -62,10 +64,10 @@ fun HalamanSatu(
                     ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    RadioButton(selected = rasaYgDipilih == item,
-                        onClick = {rasaYgDipilih = item
-                            onSelectionChanged(item)
-                        }
+                    RadioButton(selected = rasaYgDipilih == item, onClick = {
+                        rasaYgDipilih = item
+                        onSelectionChanged(item)
+                    }
                     )
                     Text(item)
                 }
@@ -74,41 +76,38 @@ fun HalamanSatu(
                 thickness = dimensionResource(R.dimen.thickness_divider),
                 modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
             )
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(dimensionResource(R.dimen.padding_medium))
                     .weight(1f, false),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-            ){
+                horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+            ) {
                 OutlinedTextField(
                     value = textJmlBeli,
+                    onValueChange = {
+                        textJmlBeli = it
+                    },
                     singleLine = true,
                     shape = MaterialTheme.shapes.large,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier
-                        .width(150.dp),
-                    label = {
-                        Text(text = "Jumlah Order")
-                    },
-                    onValueChange = {textJmlBeli = it}
+                    modifier = Modifier.width(150.dp),
+                    label = { Text(text = "Jumlah Order") }
                 )
                 Button(
                     modifier = Modifier.weight(1f),
                     enabled = textJmlBeli.isNotEmpty(),
-                    onClick = {onConfirmButtonClicked(textJmlBeli.toInt())}
-                ) {
+                    onClick = { onConfirmButtonClicked(textJmlBeli.toInt()) })
+                {
                     Text(stringResource(R.string.confirm))
                 }
-
-
             }
             Divider(
                 thickness = dimensionResource(R.dimen.thickness_divider),
                 modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
             )
-            Row (
-                modifier= Modifier
+            Row(
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(dimensionResource(R.dimen.padding_medium))
                     .weight(1f, false),
@@ -116,14 +115,14 @@ fun HalamanSatu(
                 verticalAlignment = Alignment.Bottom
             ){
                 OutlinedButton(modifier = Modifier.weight(1f),onClick = onCancelButtonClicked) {
-                    Text(stringResource(R.string.cancel))
+                    Text(text = stringResource(R.string.cancel))
                 }
                 Button(
                     modifier = Modifier.weight(1f),
                     enabled = textJmlBeli.isNotEmpty(),
-                    onClick = onNextButtonClicked
-                ){
-                    Text(stringResource(R.string.next   ))
+                    onClick = onNextButtonClicked)
+                {
+                    Text(stringResource(R.string.next))
                 }
             }
         }
