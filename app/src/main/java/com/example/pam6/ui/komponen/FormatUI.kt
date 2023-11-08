@@ -1,4 +1,4 @@
-package com.example.pam6.ui.theme.komponen
+package com.example.pam6.ui.komponen
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

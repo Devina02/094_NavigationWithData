@@ -1,4 +1,4 @@
-package com.example.pam6.ui.theme.komponen
+package com.example.pam6
 
 import androidx.lifecycle.ViewModel
 import com.example.pam6.Data.OrderUIState
@@ -8,18 +8,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.NumberFormat
 
-private const val HARGA_PER_CUP =3000
-class OrderViewModel : ViewModel (){
+private const val HARGA_PER_CUP = 3000
+class OrderViewModel : ViewModel(){
     private val _stateUI = MutableStateFlow(OrderUIState())
     val stateUI: StateFlow<OrderUIState> = _stateUI.asStateFlow()
 
     fun setJumlah(jmlEsJumbo:Int){
         _stateUI.update { stateSaatIni -> stateSaatIni.copy(jumlah = jmlEsJumbo, harga = hitungHarga(jumlah = jmlEsJumbo)) }
     }
+
     fun setRasa(rasaPilihan: String){
         _stateUI.update { stateSaatIni -> stateSaatIni.copy(rasa = rasaPilihan) }
     }
-    fun resertOrder(){
+    fun orderReset () {
         _stateUI.value = OrderUIState()
     }
     private fun hitungHarga(
