@@ -23,6 +23,15 @@ class OrderViewModel : ViewModel(){
     fun orderReset () {
         _stateUI.value = OrderUIState()
     }
+    fun setContact(list: MutableList<String>){
+        _stateUI.update {
+                stateSaatIni-> stateSaatIni.copy(
+            nama = list[0],
+            alamat = list[1],
+            tlp = list[2]
+        )
+        }
+    }
     private fun hitungHarga(
         jumlah: Int = _stateUI.value.jumlah,
         ): String {
@@ -30,4 +39,5 @@ class OrderViewModel : ViewModel(){
 
         return NumberFormat.getNumberInstance().format(kalkulasiHarga)
     }
+
 }
