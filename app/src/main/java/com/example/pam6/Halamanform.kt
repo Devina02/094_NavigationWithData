@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HalamanSatu(
+fun Halamanform(
     onSubmitButtonClicked: (MutableList<String>)-> Unit
 ){
     var namaTxt by remember {
@@ -41,6 +41,26 @@ fun HalamanSatu(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
-    ) {}
+    ) {
+        OutlinedTextField(
+            value = namaTxt,
+            onValueChange = {namaTxt = it},
+            label = { Text(text = stringResource(id = R.string.nama)) }
+        )
+        OutlinedTextField(
+            value = alamatTxt,
+            onValueChange = {alamatTxt = it},
+            label = { Text(text = stringResource(id = R.string.alamat)) }
+        )
+        OutlinedTextField(
+            value = tlpnTxt,
+            onValueChange = {tlpnTxt = it},
+            label = { Text(text = stringResource(id = R.string.notelp)) }
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+        Button(onClick = {onSubmitButtonClicked(listData)}) {
+            Text(text = stringResource(id = R.string.btnsubmit))
+        }
+    }
 }
 
