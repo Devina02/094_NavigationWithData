@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HalamanSatu(
     pilihanRasa: List<String>,
@@ -83,6 +84,7 @@ fun HalamanSatu(
                     .weight(1f, false),
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
             ) {
+
                 OutlinedTextField(
                     value = textJmlBeli,
                     onValueChange = {
